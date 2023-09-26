@@ -46,21 +46,13 @@ std::vector<std::vector<int>> Sequencial::LerMatriz(std::string nomeArquivo){
 
     // Feche o arquivo após a leitura
     arquivo.close();
-
-    for(int i =0;i<nLinhas;i++){
-        for(int j=0;j<nColunas;j++){
-            std::cout << matriz1[i][j] <<" ";
-        }
-        std::cout<< "\n";
-    }
-
     return matriz1;
 };
 
 void Sequencial::MultiplicarMatrizes(){
     //Recuperando matrizes
-    std::vector<std::vector<int>> matriz1 = this->LerMatriz("matriz1.txt");
-    std::vector<std::vector<int>> matriz2 = this->LerMatriz("matriz2.txt");
+    std::vector<std::vector<int>> matriz1 = this->LerMatriz("../output/matriz1.txt");
+    std::vector<std::vector<int>> matriz2 = this->LerMatriz("../output/matriz2.txt");
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -80,25 +72,13 @@ void Sequencial::MultiplicarMatrizes(){
         }
     }
 
-    for(int i = 0; i< matriz1.size(); i++){
-        for(int j = 0;j < matriz2[0].size();j++){
-            std::cout << matriz3[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-
     auto end_time = std::chrono::high_resolution_clock::now();
-
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-    std::cout << "tempo: "<<duration.count()<<std::endl;
-
     this->SalvarMatriz(matriz3, matriz1.size(), matriz2[0].size(), duration.count());
-
-
 }
 
 void Sequencial::SalvarMatriz(std::vector<std::vector<int>> matriz1, int linha1, int coluna1, int64_t  tempoDuracao){
-     std::string arquivoResultado = "matrizResultado.txt";
+     std::string arquivoResultado = "../output/matrizResultado.txt";
      std::ofstream arquivo(arquivoResultado);
 
     // Verifique se o arquivo foi aberto c  om sucesso
@@ -117,6 +97,4 @@ void Sequencial::SalvarMatriz(std::vector<std::vector<int>> matriz1, int linha1,
     arquivo << tempoDuracao;
     // Feche o arquivo
     arquivo.close();
-
-    std::cout << "Texto escrito com sucesso no arquivo " << arquivoResultado << std::endl;
 }

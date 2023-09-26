@@ -42,8 +42,8 @@ int Auxiliar::LerMatrizes(){
     }
 
     
-    this->SalvarMatrizes(matriz1, n1, m1, "matriz1.txt");
-    this->SalvarMatrizes(matriz2, n2, m2, "matriz2.txt");
+    this->SalvarMatrizes(matriz1, n1, m1, "../output/matriz1.txt");
+    this->SalvarMatrizes(matriz2, n2, m2, "../output/matriz2.txt");
     return 0;
 }
 
@@ -69,7 +69,5 @@ int Auxiliar::SalvarMatrizes(std::vector<std::vector<int>> matriz1, int linha1, 
     }
     // Feche o arquivo
     arquivo.close();
-
-    std::cout << "Texto escrito com sucesso no arquivo " << arquivoMatriz1 << std::endl;
     return 0;
 }
