@@ -11,16 +11,18 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
     int contadorLocal = 0;
     std::string stringValores = "";
     for(int i = numeroLinha;i<matriz1.size();i++){
-        for(int j =numeroColuna;j<matriz2[0].size();j++){  
+        for(int j =numeroColuna;j<matriz2[0].size();j++){
+            int valor = 0;
             for(int k=0;k<matriz1[0].size(); k++){
+                valor +=matriz1[i][k] * matriz2[k][j];
                 stringValores += "c";
                 stringValores.append(std::to_string(i));
                 stringValores.append(std::to_string(j)+" ");
-                stringValores.append(std::to_string(matriz1[i][k] * matriz2[k][j])+"\n");
+                stringValores.append(std::to_string(valor)+"\n");
                 this->quantidadeRestante--;
                 //this->numeroColuna++;
                 contadorLocal++;
-                if(contadorLocal == numeroP) //talvez adicionar mais uma condição aqui 
+                if(contadorLocal == this->numeroP) //talvez adicionar mais uma condição aqui 
                     break;    
             }
         }
@@ -34,8 +36,8 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
 
 std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     //Recuperando matrizes
-    std::vector<std::vector<int>> matriz1 = this->LerMatriz("matriz1.txt");
-    std::vector<std::vector<int>> matriz2 = this->LerMatriz("matriz2.txt");
+    std::vector<std::vector<int>> matriz1 = this->LerMatriz("../output/matriz1.txt");
+    std::vector<std::vector<int>> matriz2 = this->LerMatriz("../output/matriz2.txt");
 
     this->qntdLinhaMatrizResultado  = matriz1.size();
     this->qntdColunaMatrizResultado = matriz2[0].size();
@@ -51,11 +53,17 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     int numeroColuna = 0;
     int contadorArquivo = 0;
     ParaleloThreads objeto;
+    std::vector<std::thread> threads;
     while(this->quantidadeRestante > 0){
         //std::thread t1(ThreadCalculo, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
+        threads.emplace_back([&objeto, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo]() {
+        objeto.ThreadCalculo(matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
+        });
+        /*
         std::thread t1([&objeto, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo]() {
         objeto.ThreadCalculo(matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
         });
+        */
         contadorArquivo++;
         if(numeroColuna+numeroP > matriz2[0].size()){
             numeroColuna = 0;
@@ -63,10 +71,14 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
         } else{
             numeroColuna+=numeroP;
         }
+        this->quantidadeRestante -= this->numeroP;
+    }
+    for (std::thread& thread : threads) {
+        thread.join();
     }
 
+    std::cout << "Todas as threads terminaram." << std::endl;
 
-    std::vector<std::vector<int>> matriz3(matriz1.size(), std::vector<int>(matriz2[0].size()));
     return nullptr;
 }
 
@@ -119,7 +131,7 @@ std::vector<std::vector<int>> ParaleloThreads::LerMatriz(std::string nomeArquivo
 };
 
 void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo){
-    std::string arquivoResultado = "matrizResultado";
+    std::string arquivoResultado = "../output/matrizResultado";
     arquivoResultado.append(std::to_string(contadorArquivo)+".txt");
     std::ofstream arquivo(arquivoResultado);
 
