@@ -6,13 +6,15 @@ ParaleloThreads::ParaleloThreads(){
     this->quantidadeRestante = 0;
 }
 
-void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroLinha, int numeroColuna, int contadorArquivo){
+void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int contadorArquivo){
     auto start_time = std::chrono::high_resolution_clock::now();
     int contadorLocal = 0;
+    int numeroLinha = numeroElemento/matriz1.size();
+    int numeroColuna = numeroElemento % matriz2[0].size();
+    int valor = 0;
     std::string stringValores = "";
     for(int i = numeroLinha;i<matriz1.size();i++){
         for(int j =numeroColuna;j<matriz2[0].size();j++){
-            int valor = 0;
             for(int k=0;k<matriz1[0].size(); k++){
                 valor +=matriz1[i][k] * matriz2[k][j];
                 stringValores += "c";
@@ -26,7 +28,7 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
                     break;    
             }
         }
-        //this->numeroLinha++;
+        valor = 0;
     }
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
@@ -49,15 +51,14 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     }
 
     this->quantidadeRestante = matriz1.size() * matriz2[0].size(); //numero total de elementos da matriz resultado
-    int numeroLinha = 0;
-    int numeroColuna = 0;
     int contadorArquivo = 0;
+    int numeroElemento = 1;
     ParaleloThreads objeto;
     std::vector<std::thread> threads;
     while(this->quantidadeRestante > 0){
         //std::thread t1(ThreadCalculo, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
-        threads.emplace_back([&objeto, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo]() {
-        objeto.ThreadCalculo(matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
+        threads.emplace_back([&objeto, matriz1, matriz2, numeroElemento, contadorArquivo]() {
+        objeto.ThreadCalculo(matriz1, matriz2, numeroElemento, contadorArquivo);
         });
         /*
         std::thread t1([&objeto, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo]() {
@@ -65,12 +66,7 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
         });
         */
         contadorArquivo++;
-        if(numeroColuna+numeroP > matriz2[0].size()){
-            numeroColuna = 0;
-            numeroLinha++;
-        } else{
-            numeroColuna+=numeroP;
-        }
+        numeroElemento += this->numeroP;
         this->quantidadeRestante -= this->numeroP;
     }
     for (std::thread& thread : threads) {
