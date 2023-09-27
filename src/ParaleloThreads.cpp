@@ -15,16 +15,17 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
             int valor = 0;
             for(int k=0;k<matriz1[0].size(); k++){
                 valor +=matriz1[i][k] * matriz2[k][j];
-                stringValores += "c";
-                stringValores.append(std::to_string(i));
-                stringValores.append(std::to_string(j)+" ");
-                stringValores.append(std::to_string(valor)+"\n");
-                this->quantidadeRestante--;
-                //this->numeroColuna++;
-                contadorLocal++;
-                if(contadorLocal == this->numeroP) //talvez adicionar mais uma condição aqui 
-                    break;    
             }
+            stringValores += "c";
+            stringValores.append(std::to_string(i + 1));
+            stringValores.append(std::to_string(j + 1)+" ");
+            stringValores.append(std::to_string(valor)+"\n");
+            this->quantidadeRestante--;
+            //this->numeroColuna++;
+            contadorLocal++;
+            if(contadorLocal == this->numeroP){
+                break; 
+            } //talvez adicionar mais uma condição aqui  
         }
         //this->numeroLinha++;
     }
