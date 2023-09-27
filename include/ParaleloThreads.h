@@ -17,9 +17,9 @@ class ParaleloThreads{
     public:
         ParaleloThreads();
         std::vector<std::vector<int>>* MultiplicarMatrizesThreads();
-        void ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int qntdColunas, int contadorArquivo, int numeroLinhaTotal, int numeroColunaTotal, auto start_time);
+        void ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int contadorArquivo, auto start_time);
         std::vector<std::vector<int>> LerMatriz(std::string nomeArquivo);
-        void SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo,int numeroLinhaTotal, int numeroColunaTotal);
+        void SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo);
 
 };
 #endif

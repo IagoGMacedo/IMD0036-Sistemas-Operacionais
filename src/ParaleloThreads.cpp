@@ -9,12 +9,13 @@ ParaleloThreads::ParaleloThreads(){
 
 }
 
-void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int qntdColunas, int contadorArquivo, int numeroLinhaTotal, int numeroColunaTotal, auto start_time){
+void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int contadorArquivo, auto start_time){
     int contadorLocal = 0;
+    setQntdLinhaColuna(matriz1.size(), matriz2[0].size());
     std::string stringValores = "";
     std::cout << "qntd de colunas da matriz resultado" << qntdColunas <<std::endl;
-    int numeroLinha = numeroElemento/qntdColunas;
-    int numeroColuna = numeroElemento % qntdColunas;
+    int numeroLinha = numeroElemento/getQntdColuna();
+    int numeroColuna = numeroElemento % getQntdColuna();
     std::cout << "vou printar o " << numeroElemento << "º elemento, vou começar pela linha: " << numeroLinha << " e coluna: " << numeroColuna << std::endl;    
     std::cout << "valor p: " << this->numeroP << std::endl;    
     for(int i = numeroLinha;i<matriz1.size() &&  contadorLocal < this->numeroP;i++){
@@ -36,7 +37,7 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
-    this->SalvarMatriz(stringValores, duration.count(), contadorArquivo, numeroLinhaTotal, numeroColunaTotal);
+    this->SalvarMatriz(stringValores, duration.count(), contadorArquivo);
 }
 
 std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
@@ -69,8 +70,8 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     while(this->quantidadeRestante > 0){
         //std::thread t1(ThreadCalculo, matriz1, matriz2, numeroLinha, numeroColuna, contadorArquivo);
         auto start_time = std::chrono::high_resolution_clock::now();
-        threads.emplace_back([&objeto, matriz1, matriz2, numeroElemento, qntdColunas, contadorArquivo, qntdLinhas, qntdColunas2, start_time]() {
-        objeto.ThreadCalculo(matriz1, matriz2, numeroElemento, qntdColunas,  contadorArquivo,qntdLinhas, qntdColunas2, start_time );
+        threads.emplace_back([&objeto, matriz1, matriz2, numeroElemento, contadorArquivo, start_time]() {
+        objeto.ThreadCalculo(matriz1, matriz2, numeroElemento,  contadorArquivo, start_time );
         });
         numeroElemento += this->numeroP;
         /*
@@ -139,7 +140,7 @@ std::vector<std::vector<int>> ParaleloThreads::LerMatriz(std::string nomeArquivo
     return matriz1;
 };
 
-void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo, int numeroLinhaTotal, int numeroColunaTotal){
+void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo){
     std::string arquivoResultado = "../output/matrizResultado";
     arquivoResultado.append(std::to_string(contadorArquivo)+".txt");
     std::ofstream arquivo(arquivoResultado);
@@ -152,7 +153,7 @@ void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, i
     std::cout << "qntdlinhas: " << this->getQntdLinha()<<std::endl;
 
     // Escreva o conteúdo no arquivo
-    arquivo << numeroLinhaTotal << " " << numeroColunaTotal << std::endl; // linhas e colunas
+    arquivo << getQntdLinha() << " " << getQntdColuna() << std::endl; // linhas e colunas
     arquivo << matriz1;
     arquivo << tempoDuracao;
     // Feche o arquivo
