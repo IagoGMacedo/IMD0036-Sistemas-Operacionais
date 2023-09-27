@@ -2,7 +2,7 @@
 #include <thread>
 
 ParaleloThreads::ParaleloThreads(){
-    this->numeroP = 10; //no minimo 1
+    this->numeroP = 2; //no minimo 1
     this->quantidadeRestante = 0;
     this->qntdLinhaMatrizResultado = 1;
     this->qntdColunaMatrizResultado = 1;
@@ -60,8 +60,8 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     int contadorArquivo = 0;
     int numeroElemento = 0;
 
-    std::cout << "Digite o número P: " << std::endl;
-    std::cin >> this->numeroP;
+    //std::cout << "Digite o número P: " << std::endl;
+    //std::cin >> this->numeroP;
 
 
     ParaleloThreads objeto;
