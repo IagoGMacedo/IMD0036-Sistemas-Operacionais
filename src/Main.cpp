@@ -5,12 +5,11 @@
 
 
 
-
 int main(){
     Auxiliar auxiliar =* new Auxiliar();
-    Sequencial sequencial =* new Sequencial();
+    //Sequencial sequencial =* new Sequencial();
     
-    //ParaleloThreads paralelo =* new ParaleloThreads();
+    ParaleloThreads paralelo =* new ParaleloThreads();
     
     //ParaleloProcessos processos =* new ParaleloProcessos();
     int n1, m1, n2, m2;
@@ -19,9 +18,10 @@ int main(){
     std::cin >> m1;
     std::cin >> n2;
     std::cin >> m2;
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 1; i++){
         auxiliar.LerMatrizes(n1, m1, n2, m2);
-        sequencial.MultiplicarMatrizes();
+        //sequencial.MultiplicarMatrizes();
+        paralelo.MultiplicarMatrizesThreads();
     }
     //std::cout << "finalizado auxiliar e sequencial" << std::endl;
     //processos.MultiplicarMatrizesProcessos();

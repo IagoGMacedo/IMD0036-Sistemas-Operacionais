@@ -1,5 +1,6 @@
 #include "../include/ParaleloThreads.h"
 #include <thread>
+int maiorTempoT = 0;
 
 ParaleloThreads::ParaleloThreads(){
     this->numeroP = 2; //no minimo 1
@@ -12,12 +13,13 @@ ParaleloThreads::ParaleloThreads(){
 void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int contadorArquivo, auto start_time){
     int contadorLocal = 0;
     setQntdLinhaColuna(matriz1.size(), matriz2[0].size());
+    this->numeroP = (matriz1.size() * matriz2[0].size())/8;
     std::string stringValores = "";
     //std::cout << "qntd de colunas da matriz resultado" << qntdColunas <<std::endl;
     int numeroLinha = numeroElemento/getQntdColuna();
     int numeroColuna = numeroElemento % getQntdColuna();
-    std::cout << "vou printar o " << numeroElemento << "º elemento, vou começar pela linha: " << numeroLinha << " e coluna: " << numeroColuna << std::endl;    
-    std::cout << "valor p: " << this->numeroP << std::endl;    
+    //std::cout << "vou printar o " << numeroElemento << "º elemento, vou começar pela linha: " << numeroLinha << " e coluna: " << numeroColuna << std::endl;    
+    //std::cout << "valor p: " << this->numeroP << std::endl;    
     for(int i = numeroLinha;i<matriz1.size() &&  contadorLocal < this->numeroP;i++){
         for(int j =numeroColuna;j<matriz2[0].size() && contadorLocal < this->numeroP;j++){
             int valor = 0;
@@ -36,7 +38,9 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
     }
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
+    if(duration.count() > maiorTempoT){
+        maiorTempoT = duration.count();
+    }
     this->SalvarMatriz(stringValores, duration.count(), contadorArquivo);
 }
 
@@ -46,6 +50,7 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     std::vector<std::vector<int>> matriz2 = this->LerMatriz("./output/matriz2.txt");
 
     this->setQntdLinhaColuna(matriz1.size(), matriz2[0].size());
+    this->numeroP = (matriz1.size() * matriz2[0].size())/8;
     int qntdLinhas = matriz1.size();
     int qntdColunas = matriz2[0].size();
     int qntdColunas2 = matriz2[0].size();
@@ -87,7 +92,8 @@ std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
         thread.join();
     }
 
-    std::cout << "Todas as threads terminaram." << std::endl;
+    std::cout << "Todas as threads terminaram. O tempo (ms) foi de: " << maiorTempoT << std::endl;
+
 
     return nullptr;
 }
@@ -132,9 +138,9 @@ std::vector<std::vector<int>> ParaleloThreads::LerMatriz(std::string nomeArquivo
 
     for(int i =0;i<nLinhas;i++){
         for(int j=0;j<nColunas;j++){
-            std::cout << matriz1[i][j] <<" ";
+            //std::cout << matriz1[i][j] <<" ";S
         }
-        std::cout<< "\n";
+        //std::cout<< "\n";
     }
 
     return matriz1;
@@ -150,7 +156,7 @@ void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, i
         std::cerr << "Erro ao abrir o arquivo." << std::endl;
     }
 
-    std::cout << "qntdlinhas: " << this->getQntdLinha()<<std::endl;
+    //std::cout << "qntdlinhas: " << this->getQntdLinha()<<std::endl;
 
     // Escreva o conteúdo no arquivo
     arquivo << getQntdLinha() << " " << getQntdColuna() << std::endl; // linhas e colunas
@@ -159,7 +165,14 @@ void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, i
     // Feche o arquivo
     arquivo.close();
 
-    std::cout << "Texto escrito com sucesso no arquivo " << arquivoResultado << std::endl;
+    //std::cout << "Texto escrito com sucesso no arquivo " << arquivoResultado << std::endl;
+    arquivoResultado = "./output/maiorTempoThread";
+    std::ofstream arquivo2(arquivoResultado);
+    if (!arquivo2.is_open()) {
+        //std::cerr << "Erro ao abrir o arquivo." << std::endl;
+    }
+    arquivo2 << maiorTempoT;
+    arquivo2.close();
 }
 
 void ParaleloThreads::setQntdLinhaColuna(int numeroLinha, int numeroColuna){
