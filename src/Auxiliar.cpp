@@ -12,18 +12,18 @@ Auxiliar::Auxiliar(){
 }
 
 
-int Auxiliar::LerMatrizes(){
-    int n1, m1, n2, m2;
+int Auxiliar::LerMatrizes(int n1, int m1, int n2, int m2){
+    //int n1, m1, n2, m2;
 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> distribution(1, 10);
 
-    std::cout << "Digite quatro números inteiros separados por espaços: " << std::endl;
-    std::cin >> n1;
-    std::cin >> m1;
-    std::cin >> n2;
-    std::cin >> m2;
+    //std::cout << "Digite quatro números inteiros separados por espaços: " << std::endl;
+    //std::cin >> n1;
+    //std::cin >> m1;
+    //std::cin >> n2;
+    //std::cin >> m2;
 
     std::vector<std::vector<int>> matriz1(n1, std::vector<int>(m1));
     std::vector<std::vector<int>> matriz2(n2, std::vector<int>(m2));

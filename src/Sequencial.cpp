@@ -95,6 +95,7 @@ void Sequencial::SalvarMatriz(std::vector<std::vector<int>> matriz1, int linha1,
         }
     }
     arquivo << tempoDuracao;
+    std::cout << "Tempo duração (ms): " << tempoDuracao << std::endl;
     // Feche o arquivo
     arquivo.close();
 }
