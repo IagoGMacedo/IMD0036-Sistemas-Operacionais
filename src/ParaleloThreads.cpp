@@ -13,7 +13,7 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
     int contadorLocal = 0;
     setQntdLinhaColuna(matriz1.size(), matriz2[0].size());
     std::string stringValores = "";
-    std::cout << "qntd de colunas da matriz resultado" << qntdColunas <<std::endl;
+    //std::cout << "qntd de colunas da matriz resultado" << qntdColunas <<std::endl;
     int numeroLinha = numeroElemento/getQntdColuna();
     int numeroColuna = numeroElemento % getQntdColuna();
     std::cout << "vou printar o " << numeroElemento << "º elemento, vou começar pela linha: " << numeroLinha << " e coluna: " << numeroColuna << std::endl;    
@@ -42,8 +42,8 @@ void ParaleloThreads::ThreadCalculo(std::vector<std::vector<int>> matriz1, std::
 
 std::vector<std::vector<int>>* ParaleloThreads::MultiplicarMatrizesThreads(){
     //Recuperando matrizes
-    std::vector<std::vector<int>> matriz1 = this->LerMatriz("../output/matriz1.txt");
-    std::vector<std::vector<int>> matriz2 = this->LerMatriz("../output/matriz2.txt");
+    std::vector<std::vector<int>> matriz1 = this->LerMatriz("./output/matriz1.txt");
+    std::vector<std::vector<int>> matriz2 = this->LerMatriz("./output/matriz2.txt");
 
     this->setQntdLinhaColuna(matriz1.size(), matriz2[0].size());
     int qntdLinhas = matriz1.size();
@@ -141,7 +141,7 @@ std::vector<std::vector<int>> ParaleloThreads::LerMatriz(std::string nomeArquivo
 };
 
 void ParaleloThreads::SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo){
-    std::string arquivoResultado = "../output/matrizResultado";
+    std::string arquivoResultado = "./output/matrizResultado";
     arquivoResultado.append(std::to_string(contadorArquivo)+".txt");
     std::ofstream arquivo(arquivoResultado);
 

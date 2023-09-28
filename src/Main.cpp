@@ -17,7 +17,9 @@ int main(){
     sequencial.MultiplicarMatrizes();
     std::cout << "finalizado auxiliar e sequencial" << std::endl;
     //processos.MultiplicarMatrizesProcessos();
-    processos.TestandoProcessos();
-    //paralelo.MultiplicarMatrizesThreads();
+    paralelo.MultiplicarMatrizesThreads();
+    std::cout <<" dels do ceu" <<std::endl;
+    //processos.TestandoProcessos();
+    
     return 0;
 }

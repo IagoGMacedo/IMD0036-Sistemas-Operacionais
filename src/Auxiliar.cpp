@@ -42,8 +42,8 @@ int Auxiliar::LerMatrizes(){
     }
 
     
-    this->SalvarMatrizes(matriz1, n1, m1, "../output/matriz1.txt");
-    this->SalvarMatrizes(matriz2, n2, m2, "../output/matriz2.txt");
+    this->SalvarMatrizes(matriz1, n1, m1, "./output/matriz1.txt");
+    this->SalvarMatrizes(matriz2, n2, m2, "./output/matriz2.txt");
     return 0;
 }
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <unistd.h>
+#include <sys/wait.h>
 
 class ParaleloProcessos{
     private:
@@ -19,7 +20,7 @@ class ParaleloProcessos{
     public:
         ParaleloProcessos();
         std::vector<std::vector<int>>* MultiplicarMatrizesProcessos();
-        void ProcessoCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int qntdColunas, int contadorArquivo, int numeroLinhaTotal, int numeroColunaTotal, auto start_time);
+        void ProcessoCalculo(std::vector<std::vector<int>> matriz1, std::vector<std::vector<int>> matriz2, int numeroElemento, int qntdColunas, int contadorArquivo, int numeroLinhaTotal, int numeroColunaTotal);
         std::vector<std::vector<int>> LerMatriz(std::string nomeArquivo);
         void SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo,int numeroLinhaTotal, int numeroColunaTotal);
         void TestandoProcessos();

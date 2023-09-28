@@ -51,8 +51,8 @@ std::vector<std::vector<int>> Sequencial::LerMatriz(std::string nomeArquivo){
 
 void Sequencial::MultiplicarMatrizes(){
     //Recuperando matrizes
-    std::vector<std::vector<int>> matriz1 = this->LerMatriz("../output/matriz1.txt");
-    std::vector<std::vector<int>> matriz2 = this->LerMatriz("../output/matriz2.txt");
+    std::vector<std::vector<int>> matriz1 = this->LerMatriz("./output/matriz1.txt");
+    std::vector<std::vector<int>> matriz2 = this->LerMatriz("./output/matriz2.txt");
 
     auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -78,7 +78,7 @@ void Sequencial::MultiplicarMatrizes(){
 }
 
 void Sequencial::SalvarMatriz(std::vector<std::vector<int>> matriz1, int linha1, int coluna1, int64_t  tempoDuracao){
-     std::string arquivoResultado = "../output/matrizResultado.txt";
+     std::string arquivoResultado = "./output/matrizResultado.txt";
      std::ofstream arquivo(arquivoResultado);
 
     // Verifique se o arquivo foi aberto c  om sucesso
