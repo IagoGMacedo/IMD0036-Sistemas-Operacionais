@@ -186,3 +186,5 @@ int ParaleloThreads::getQntdLinha(){
 int ParaleloThreads::getQntdColuna(){
     return this->qntdColunaMatrizResultado;
 }
+
+

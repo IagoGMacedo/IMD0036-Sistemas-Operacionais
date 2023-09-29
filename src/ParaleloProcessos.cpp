@@ -1,4 +1,7 @@
 #include "../include/ParaleloProcessos.h"
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 ParaleloProcessos::ParaleloProcessos()
 {
@@ -199,4 +202,37 @@ int ParaleloProcessos::getQntdLinha()
 int ParaleloProcessos::getQntdColuna()
 {
     return this->qntdColunaMatrizResultado;
+}
+void ParaleloProcessos::EncontrarMaior(){
+    bool terminou = false;
+    std::string nomeArquivo = "./output/matrizResultado";
+    int contadorArquivo = 0;
+    int maiorTempo = 0;
+    std::string nomeArquivoCompleto = nomeArquivo+std::to_string(contadorArquivo)+".txt";
+    std::cout << nomeArquivoCompleto <<std::endl;
+    while(fs::exists(nomeArquivoCompleto)){
+        std::cout << "entrando em "<<nomeArquivoCompleto<<std::endl;
+        std::string retorno = this->RetornarValorP(nomeArquivoCompleto);
+        if(maiorTempo < std::stoul(retorno)){
+            maiorTempo = std::stoul(retorno);
+        }
+        contadorArquivo++;
+        nomeArquivoCompleto = nomeArquivo+std::to_string(contadorArquivo)+".txt";
+    }
+    std::cout << "maior tempo nos processo:"<<maiorTempo <<std::endl;
+}
+
+std::string ParaleloProcessos::RetornarValorP(std::string nomeArquivo){
+    std::ifstream arquivo(nomeArquivo);
+    // Verifique se o arquivo foi aberto com sucesso
+    if (!arquivo.is_open()) {
+        std::cout << "Não foi possível abrir o arquivo " << nomeArquivo << std::endl;
+    }
+    std::string valorTempo;
+    std::string linha;
+    int valorArquivo = 0;
+    while (std::getline(arquivo, linha)) {
+        valorTempo = linha;
+    }
+    return valorTempo;
 }

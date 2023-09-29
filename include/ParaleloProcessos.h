@@ -24,5 +24,9 @@ class ParaleloProcessos{
         std::vector<std::vector<int>> LerMatriz(std::string nomeArquivo);
         void SalvarMatriz(std::string matriz1, int64_t  tempoDuracao, int contadorArquivo,int numeroLinhaTotal, int numeroColunaTotal);
         void TestandoProcessos();
+        void EncontrarMaior();
+        std::string RetornarValorP(std::string nomeArquivo);
+
+
 };
 #endif
